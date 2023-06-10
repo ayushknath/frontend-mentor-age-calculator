@@ -1,0 +1,59 @@
+*,
+*::after,
+*::before {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  height: 100vh;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  font-family: $ff-base;
+  background-color: $neutral-300;
+}
+
+input,
+button {
+  border: 0;
+  outline: 0;
+  background-color: transparent;
+  font: {
+    family: inherit;
+    size: 1rem;
+  }
+
+  &:hover {
+    cursor: pointer;
+  }
+}
+
+@include placeholder($neutral-400);
+
+img {
+  max-width: 100%;
+  height: auto;
+  display: inline-block;
+}
+
+.submit-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 5rem;
+  aspect-ratio: 1;
+  padding: 0.5rem;
+  border-radius: 50%;
+  background-color: $primary-100;
+}
+
+#output {
+  font-weight: 800;
+  font-style: italic;
+}
+
+#output > div[class|="output"] > span:first-child {
+  color: $primary-100;
+}

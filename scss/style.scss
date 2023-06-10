@@ -1,0 +1,120 @@
+@import "variables";
+@import "mixins";
+@import "defaults";
+
+#app {
+  width: 42rem;
+  padding: 2.5rem;
+  border: {
+    radius: $rounded-md;
+    bottom-right-radius: $rounded-xl;
+  }
+  background-color: $neutral-100;
+}
+
+#input {
+  position: relative;
+  display: flex;
+  justify-content: flex-start;
+  padding-block-end: 2.5rem;
+  border-bottom: 1px solid $neutral-300;
+
+  & > form {
+    display: flex;
+    align-items: center;
+    column-gap: 1.5rem;
+
+    & > div[class|="field"] {
+      display: flex;
+      flex-direction: column;
+      align-items: start;
+      row-gap: 0.5rem;
+    }
+
+    label {
+      color: $neutral-400;
+      font-size: 0.875rem;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+    }
+
+    input[type="number"] {
+      width: 8rem;
+      padding: 0.5rem 1rem;
+      font-size: 1.5rem;
+      border-radius: $rounded-sm;
+      border: 1px solid $neutral-300;
+
+      &:focus {
+        border-color: $primary-100;
+      }
+    }
+
+    .submit-btn {
+      position: absolute;
+      bottom: -42px;
+      right: 0;
+
+      &:active {
+        background-color: $neutral-500;
+      }
+    }
+  }
+}
+
+#output {
+  font-size: 5rem;
+  padding-block-start: 2.5rem;
+
+  & > div[class|="output"]:nth-child(2),
+  & > div[class|="output"]:last-child {
+    margin-block-start: -32px;
+  }
+}
+
+@media (max-width: 768px) {
+  #app {
+    width: 95%;
+    padding-inline: 1rem;
+  }
+
+  #input {
+    justify-content: center;
+    padding-block-end: 3rem;
+
+    & > form {
+      column-gap: 0.875rem;
+
+      label {
+        font-size: 0.75rem;
+      }
+
+      input[type="number"] {
+        width: 100%;
+        font-size: 1rem;
+        padding-inline: 0.5rem;
+      }
+
+      .submit-btn {
+        width: 3.5rem;
+        bottom: -32px;
+        right: 50%;
+        transform: translateX(50%);
+
+        & > img {
+          max-width: 60%;
+        }
+      }
+    }
+  }
+
+  #output {
+    font-size: 2rem;
+    padding-block-start: 3rem;
+
+    & > div[class|="output"]:nth-child(2),
+    & > div[class|="output"]:last-child {
+      margin-block-start: -8px;
+    }
+  }
+}
