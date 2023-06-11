@@ -1,8 +1,71 @@
 class BirthDate {
   constructor(day, month, year) {
-    this.day = day;
-    this.month = month;
-    this.year = year;
+    this.day = +day;
+    this.month = +month;
+    this.year = +year;
+  }
+}
+
+class Validation {
+  static isEmpty(dayValue, monthValue, yearValue) {
+    if (dayValue === "" || monthValue === "" || yearValue === "") {
+      if (dayValue === "") {
+        UI.showError("This field is required", "day");
+      }
+      if (monthValue === "") {
+        UI.showError("This field is required", "month");
+      }
+      if (yearValue === "") {
+        UI.showError("This field is required", "year");
+      }
+
+      return true;
+    }
+
+    return false;
+  }
+
+  static isOutOfRange({ day, month, year }) {
+    let returnValue = false;
+    const currentDate = new Date();
+    const currentDay = currentDate.getDate();
+    const currentMonth = currentDate.getMonth() + 1;
+    const currentYear = currentDate.getFullYear();
+
+    if (day > 31 || day < 1) {
+      UI.showError("Must be a valid day", "day");
+      returnValue = true;
+    }
+
+    if (month > 12 || month < 1) {
+      UI.showError("Must be a valid month", "month");
+      returnValue = true;
+    }
+
+    if (year > currentYear) {
+      UI.showError("Must be in the past", "year");
+      returnValue = true;
+    }
+
+    return returnValue;
+  }
+
+  static isInvalidDate({ day, month, year }) {
+    const currentDate = new Date();
+
+    const currentDay = currentDate.getDate();
+    const currentMonth = currentDate.getMonth() + 1;
+    const currentYear = currentDate.getFullYear();
+
+    if (year === currentYear && (month > currentMonth || day > currentDay)) {
+      UI.showError("Must be a valid date", "day");
+      UI.showError("", "month");
+      UI.showError("", "year");
+
+      return true;
+    }
+
+    return false;
   }
 }
 
@@ -19,7 +82,7 @@ class CalculateAge {
 
     if (currentDay < birthDate.day) {
       currentMonth--;
-      currentDay += CalculateAge.daysInAMonth(currentMonth);
+      currentDay += CalculateAge.daysInAMonth(currentMonth, currentYear);
       dayDifference = currentDay - birthDate.day;
     } else {
       dayDifference = currentDay - birthDate.day;
@@ -42,7 +105,7 @@ class CalculateAge {
     };
   }
 
-  static daysInAMonth(month) {
+  static daysInAMonth(month, year) {
     let days;
 
     switch (month) {
@@ -56,7 +119,7 @@ class CalculateAge {
         days = 31;
         break;
       case 2:
-        days = currentYear % 4 === 0 ? 29 : 28;
+        days = year % 4 === 0 ? 29 : 28;
         break;
       case 4:
       case 6:
@@ -84,6 +147,22 @@ class UI {
         }
       });
   }
+
+  static showError(errorMessage, inputID) {
+    document
+      .querySelectorAll('#input > form div[class|="field"]')
+      .forEach((field) => {
+        if (field.children[1].id === inputID) {
+          field.classList.add("error");
+          field.children[2].textContent = errorMessage;
+
+          setTimeout(() => {
+            field.classList.remove("error");
+            field.children[2].textContent = "";
+          }, 3000);
+        }
+      });
+  }
 }
 
 document.querySelector("#input > form").addEventListener("submit", (e) => {
@@ -93,15 +172,19 @@ document.querySelector("#input > form").addEventListener("submit", (e) => {
   const monthValue = document.querySelector("input#month").value;
   const yearValue = document.querySelector("input#year").value;
 
-  if (dayValue === "" || monthValue === "" || yearValue === "") {
+  if (Validation.isEmpty(dayValue, monthValue, yearValue)) {
     return;
   }
 
-  const birthDate = new BirthDate(
-    parseInt(dayValue),
-    parseInt(monthValue),
-    parseInt(yearValue)
-  );
+  const birthDate = new BirthDate(dayValue, monthValue, yearValue);
+
+  if (Validation.isOutOfRange(birthDate)) {
+    return;
+  }
+
+  if (Validation.isInvalidDate(birthDate)) {
+    return;
+  }
 
   UI.showAge(CalculateAge.age(birthDate));
 });

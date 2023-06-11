@@ -78,7 +78,7 @@ img {
   position: relative;
   display: flex;
   justify-content: flex-start;
-  padding-block-end: 2.5rem;
+  padding-block-end: 2rem;
   border-bottom: 1px solid hsl(0, 0%, 86%);
 }
 #input > form {
@@ -91,6 +91,15 @@ img {
   flex-direction: column;
   align-items: start;
   row-gap: 0.5rem;
+}
+#input > form > div[class|=field].error label {
+  color: red;
+}
+#input > form > div[class|=field].error input[type=number] {
+  border-color: red;
+}
+#input > form > div[class|=field].error .error-message {
+  opacity: 1;
 }
 #input > form label {
   color: hsl(0, 1%, 44%);
@@ -107,6 +116,13 @@ img {
 }
 #input > form input[type=number]:focus {
   border-color: hsl(259, 100%, 65%);
+}
+#input > form .error-message {
+  font-size: 0.75rem;
+  font-style: italic;
+  font-weight: 400;
+  color: red;
+  opacity: 0;
 }
 #input > form .submit-btn {
   position: absolute;
@@ -132,7 +148,7 @@ img {
   }
   #input {
     justify-content: center;
-    padding-block-end: 3rem;
+    padding-block-end: 1.5rem;
   }
   #input > form {
     column-gap: 0.875rem;
